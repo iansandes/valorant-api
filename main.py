@@ -14,6 +14,7 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
+
 # Dependency
 def get_db():
     db = SessionLocal()
@@ -31,7 +32,9 @@ def get_agents(db: Session = Depends(get_db)):
 
 @app.get("/sync_agents/")
 def sync_agents(db: Session = Depends(get_db)):
-    agents_return = requests.get("https://valorant-api.com/v1/agents/?language=pt-BR")
+    agents_return = requests.get(
+        "https://valorant-api.com/v1/agents/?language=pt-BR"
+    )  # noqa
     agents_return = agents_return.json()
     for agent in agents_return["data"]:
         if agent["displayName"] == "Sova":
