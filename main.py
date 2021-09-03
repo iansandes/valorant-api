@@ -41,7 +41,7 @@ def sync_agents(db: Session = Depends(get_db)):
             new_agent = schemas.Agent(
                 name=agent["displayName"],
                 description=agent["description"],
-                image=agent["fullPortrait"],
+                image="https://vignette.wikia.nocookie.net/valorant/images/6/61/Sova_artwork.png/revision/latest?cb=20200602020314",  # noqa
                 role="Iniciador",
             )
         else:
