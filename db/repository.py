@@ -22,3 +22,21 @@ def create_agent(db: Session, agent: schemas.Agent):
     db.add(db_agent)
     db.commit()
     db.refresh(db_agent)
+
+
+def get_maps(db: Session):
+    return db.query(models.Map).all()
+
+
+def get_map(db: Session, map_name: str):
+    return db.query(models.Map).filter(models.Map.name == map_name).first()  # noqa
+
+
+def create_map(db: Session, map: schemas.Map):
+    db_map = models.Map(
+        name=map.name,
+        image=map.image,
+    )
+    db.add(db_map)
+    db.commit()
+    db.refresh(db_map)
