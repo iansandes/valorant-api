@@ -41,14 +41,14 @@ def sync_agents(db: Session = Depends(get_db)):
             new_agent = schemas.Agent(
                 name=agent["displayName"],
                 description=agent["description"],
-                image=agent["displayIcon"],
+                image=agent["fullPortrait"],
                 role="Iniciador",
             )
         else:
             new_agent = schemas.Agent(
                 name=agent["displayName"],
                 description=agent["description"],
-                image=agent["displayIcon"],
+                image=agent["fullPortrait"],
                 role=agent["role"]["displayName"],
             )
         db_agent = repository.get_agent(db, new_agent.name)
