@@ -1,6 +1,3 @@
-from os import name
-
-
 from db import models, schemas
 from sqlalchemy.orm import Session
 
@@ -10,7 +7,9 @@ def get_agents(db: Session):
 
 
 def get_agent(db: Session, agent_name: str):
-    return db.query(models.Agent).filter(models.Agent.name == agent_name).first()
+    return (
+        db.query(models.Agent).filter(models.Agent.name == agent_name).first()
+    )  # noqa
 
 
 def create_agent(db: Session, agent: schemas.Agent):
