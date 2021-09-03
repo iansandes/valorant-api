@@ -12,3 +12,11 @@ class Agent(Base):
     description = Column(String, index=True)
     image = Column(String, index=True)
     role = Column(String, index=True)
+
+
+class Map(Base):
+    __tablename__ = "maps"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, index=True)
+    image = Column(String, index=True)

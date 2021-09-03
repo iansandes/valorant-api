@@ -57,3 +57,28 @@ def sync_agents(db: Session = Depends(get_db)):
         repository.create_agent(db=db, agent=new_agent)
 
     return {"message": "Agents was sync!"}
+
+
+@app.get("/maps/", response_model=List[schemas.Map])
+def get_maps(db: Session = Depends(get_db)):
+    maps = repository.get_maps(db)
+    return maps
+
+
+@app.get("/sync_maps/")
+def sync_maps(db: Session = Depends(get_db)):
+    maps_return = requests.get(
+        "https://valorant-api.com/v1/maps/?language=pt-BR"
+    )  # noqa
+    maps_return = maps_return.json()
+    for map in maps_return["data"]:
+        new_map = schemas.Map(
+            name=map["displayName"],
+            image=map["splash"],
+        )
+        db_map = repository.get_map(db, new_map.name)
+        if db_map:
+            continue
+        repository.create_map(db=db, map=new_map)
+
+    return {"message": "Maps was sync!"}
