@@ -46,7 +46,7 @@ def sync_agents(db: Session = Depends(get_db)):
     )
     agents_return = agents_return.json()
     for agent in agents_return["data"]:
-        new_agent = schemas.Agent(
+        new_agent = models.Agent(
             name=agent["displayName"],
             description=agent["description"],
             image=agent["fullPortrait"],
