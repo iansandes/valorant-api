@@ -2,6 +2,7 @@ import requests
 
 from typing import List
 from fastapi import Depends, FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 
 from db import models, repository, schemas
@@ -13,6 +14,14 @@ from sqlalchemy.orm import Session
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 # Dependency
