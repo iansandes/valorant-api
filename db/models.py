@@ -20,3 +20,11 @@ class Map(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True)
     image = Column(String, index=True)
+
+
+class Gamemode(Base):
+    __tablename__ = "gamemodes"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, index=True)
+    image = Column(String, index=True)

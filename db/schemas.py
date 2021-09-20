@@ -15,6 +15,17 @@ class Agent(BaseModel):
 
 class Map(BaseModel):
 
+    id: str
+    name: str
+    image: str
+
+    class Config:
+        orm_mode = True
+
+
+class Gamemode(BaseModel):
+
+    id: int
     name: str
     image: str
 

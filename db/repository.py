@@ -40,3 +40,25 @@ def create_map(db: Session, map: schemas.Map):
     db.add(db_map)
     db.commit()
     db.refresh(db_map)
+
+
+def get_gamemodes(db: Session):
+    return db.query(models.Gamemode).all()
+
+
+def get_gamemode(db: Session, gamemode_name: str):
+    return (
+        db.query(models.Gamemode)
+        .filter(models.Gamemode.name == gamemode_name)
+        .first()  # noqa
+    )
+
+
+def create_gamemode(db: Session, gamemode: schemas.Gamemode):
+    db_gamemode = models.Gamemode(
+        name=gamemode.name,
+        image=gamemode.image,
+    )
+    db.add(db_gamemode)
+    db.commit()
+    db.refresh(db_gamemode)
