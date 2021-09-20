@@ -11,3 +11,12 @@ class Agent(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class Map(BaseModel):
+
+    name: str
+    image: str
+
+    class Config:
+        orm_mode = True
