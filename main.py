@@ -39,7 +39,7 @@ def get_agents(db: Session = Depends(get_db)):
     return agents
 
 
-@app.get("/sync_agents/")
+@app.get("/sync-agents/")
 def sync_agents(db: Session = Depends(get_db)):
     agents_return = requests.get(
         "https://valorant-api.com/v1/agents?isPlayableCharacter=true&language=pt-BR"  # noqa
@@ -66,7 +66,7 @@ def get_maps(db: Session = Depends(get_db)):
     return maps
 
 
-@app.get("/sync_maps/")
+@app.get("/sync-maps/")
 def sync_maps(db: Session = Depends(get_db)):
     maps_return = requests.get(
         "https://valorant-api.com/v1/maps/?language=pt-BR"
@@ -83,3 +83,37 @@ def sync_maps(db: Session = Depends(get_db)):
         repository.create_map(db=db, map=new_map)
 
     return {"message": "Maps was sync!"}
+
+
+@app.get("/gamemodes/", response_model=List[schemas.Gamemode])
+def get_gamemodes(db: Session = Depends(get_db)):
+    gamemodes = repository.get_gamemodes(db)
+    return gamemodes
+
+
+@app.get("/sync-gamemodes/")
+def sync_gamemodes(db: Session = Depends(get_db)):
+    gamemodes_return = requests.get(
+        "https://valorant-api.com/v1/gamemodes/?language=pt-BR"
+    )  # noqa
+    gamemodes_return = gamemodes_return.json()
+    for gamemode in gamemodes_return["data"]:
+        if gamemode["displayIcon"] == None:
+            continue
+        new_gamemode = models.Gamemode(
+            name=gamemode["displayName"],
+            image=gamemode["displayIcon"],
+        )
+        db_gamemode = repository.get_gamemode(db, new_gamemode.name)
+        if db_gamemode:
+            continue
+        repository.create_gamemode(db=db, gamemode=new_gamemode)
+
+    return {"message": "Gamemodes was sync!"}
+
+
+@app.get("/home-gamemodes/", response_model=List[schemas.Gamemode])
+def get_home_gamemodes(db: Session = Depends(get_db)):
+    home_gamemodes = ["Padrão", "Disparada", "Replicação", "Mata-Mata"]
+    gamemodes = [repository.get_gamemode(db, name) for name in home_gamemodes]
+    return gamemodes
